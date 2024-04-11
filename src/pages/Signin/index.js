@@ -11,6 +11,8 @@ import React from 'react'
 import * as Animatable from 'react-native-animatable'
 
 import { useNavigation } from '@react-navigation/native'
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 
 export default function SignIn() {
     const navigation = useNavigation();
@@ -49,18 +51,46 @@ export default function SignIn() {
                 />
             </Animatable.View>
 
-            <View style={styles.buttonBox}>
+            <Animatable.View
+                animation='fadeInUp'
+                style={styles.buttonBox}
+            >
+
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Confirmar</Text>
                 </TouchableOpacity>
-            </View>
 
-            <TouchableOpacity
-                style={styles.buttonRegister}
-                onPress={() => navigation.navigate('SignUp')}
+            </Animatable.View>
+
+            <Animatable.View
+                animation='fadeInUp'
+                style={styles.buttonBox}
             >
-                <Text style={styles.registerText}>Não possui conta? Cadastre-se!</Text>
-            </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonGoogle}>
+
+                    <AntDesign name="google" size={30} color="#4285F4" style={styles.googleIconStyle} />
+                    <Text style={styles.buttonTextGoogle}>Logar com conta Google</Text>
+
+                </TouchableOpacity>
+
+            </Animatable.View>
+
+
+
+            <Animatable.View
+                animation='fadeInUp'
+                delay={500}
+                style={styles.buttonBox}
+            >
+                <TouchableOpacity
+                    style={styles.buttonRegister}
+                    delay={700}
+                    onPress={() => navigation.navigate('SignUp')}
+                >
+                    <Text style={styles.registerText}>Não possui conta? Cadastre-se!</Text>
+                </TouchableOpacity>
+            </Animatable.View>
 
         </View>
     )
@@ -116,6 +146,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    buttonGoogle: {
+        flexDirection: 'row',
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 20,
+        width: "400%",
+        alignSelf: "center",
+        top: "10%",
+    },
     buttonBox: {
         alignSelf: "center",
         justifyContent: 'center',
@@ -127,13 +166,26 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
+    buttonTextGoogle: {
+        color: 'black',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    googleIconStyle: {
+        paddingVertical: 5,
+        marginRight: 10,
+        marginLeft: 10,
+    },
     buttonRegister: {
-        marginTop: 14,
+        marginTop: 4,
         alignSelf: 'center',
     },
     registerText: {
         color: '#D68C45',
         marginBottom: 25,
+        top: "150%",
         alignSelf: 'center',
     },
 })
