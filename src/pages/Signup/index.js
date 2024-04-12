@@ -63,11 +63,15 @@ export default function SignUp() {
                     style={styles.input}
                 />
 
-                <View style={styles.buttonBox}>
+                <Animatable.View
+                    animation='fadeInUp'
+                    delay={800}
+                    style={styles.buttonBox}
+                >
                     <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>Confirmar</Text>
                     </TouchableOpacity>
-                </View>
+                </Animatable.View>
 
             </Animatable.View>
 
