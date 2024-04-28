@@ -1,14 +1,6 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity
-} from 'react-native'
-
-import React from 'react'
-
-import * as Animatable from 'react-native-animatable'
+import React from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 export default function SignUp() {
     return (
@@ -21,7 +13,6 @@ export default function SignUp() {
                     resizeMode='contain'
                 />
             </View>
-
 
             <Animatable.View
                 animation='fadeInUp'
@@ -74,7 +65,6 @@ export default function SignUp() {
                 </Animatable.View>
 
             </Animatable.View>
-
         </View>
     )
 }
@@ -95,7 +85,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingStart: '10%',
         paddingEnd: '10%',
-        marginBottom: '95%',
+        marginBottom: '5%', // Adjusted margin bottom
     },
     signupTitleBox: {
         marginBottom: 12,
@@ -110,23 +100,21 @@ const styles = StyleSheet.create({
 
     },
     title: {
-        fontSize: 10,
+        fontSize: 20,
         marginTop: 8,
     },
     input: {
         borderBottomWidth: 1,
-        height: 20,
-        marginBottom: 15,
-        fontSize: 8,
+        height: 40,
+        marginBottom: 12,
+        fontSize: 16,
     },
     button: {
-        position: "absolute",
         backgroundColor: '#129063',
         borderRadius: 8,
         paddingVertical: 8,
         width: "60%",
         alignSelf: "center",
-        bottom: "15%",
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -141,4 +129,4 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
-})
+});

@@ -1,21 +1,24 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity
-} from 'react-native'
-
-import React from 'react'
-
-import * as Animatable from 'react-native-animatable'
-
-import { useNavigation } from '@react-navigation/native'
+import React from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import * as Animatable from 'react-native-animatable';
+import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
 
 export default function SignIn() {
     const navigation = useNavigation();
+
+    const signInWithGoogle = async () => {
+        try {
+            await GoogleSignin.configure();
+            const { idToken } = await GoogleSignin.signIn();
+            const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+            await auth().signInWithCredential(googleCredential);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -67,16 +70,12 @@ export default function SignIn() {
                 style={styles.buttonBox}
             >
 
-                <TouchableOpacity style={styles.buttonGoogle}>
-
+                <TouchableOpacity style={styles.buttonGoogle} onPress={signInWithGoogle}>
                     <AntDesign name="google" size={30} color="#4285F4" style={styles.googleIconStyle} />
                     <Text style={styles.buttonTextGoogle}>Logar com conta Google</Text>
-
                 </TouchableOpacity>
 
             </Animatable.View>
-
-
 
             <Animatable.View
                 animation='fadeInUp'
@@ -91,7 +90,6 @@ export default function SignIn() {
                     <Text style={styles.registerText}>Não possui conta? Cadastre-se!</Text>
                 </TouchableOpacity>
             </Animatable.View>
-
         </View>
     )
 }
@@ -150,10 +148,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderColor: 'black',
         borderWidth: 1,
-        borderRadius: 20,
-        width: "400%",
+        borderRadius: 8,
+        width: "60%",
         alignSelf: "center",
         top: "10%",
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     buttonBox: {
         alignSelf: "center",
@@ -188,4 +188,4 @@ const styles = StyleSheet.create({
         top: "150%",
         alignSelf: 'center',
     },
-})
+});
