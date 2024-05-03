@@ -1,41 +1,41 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import db from "../services/firebaseConfigs";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../services/firebaseConfig"; // Assumindo que 'db' está inicializado em firebaseConfig.js
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 
-export default function SignUp() {
+const SignUp = () => {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
+  const navigation = useNavigation(); // Para navegação entre telas
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (senha !== confirmarSenha) {
-      // Senhas não coincidem
+      alert("As senhas não coincidem. Tente novamente.");
       return;
     }
 
-    db.collection("users")
-      .add({
-        nome,
-        telefone,
-        email,
-        senha,
-      })
-      .then(() => {
-        console.log("Usuário cadastrado com sucesso!");
-        // Aqui você pode redirecionar o usuário para outra tela ou fazer outras ações
-      })
-      .catch((error) => {
-        console.error("Erro ao cadastrar usuário: ", error);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+      const user = userCredential.user;
+
+      // Salvar informações do usuário no Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        nome: nome,
+        telefone: telefone,
+        email: email,
       });
+
+      console.log("Usuário cadastrado com sucesso:", user.uid);
+      navigation.navigate("SignIn"); // Redireciona para a tela de login após o cadastro
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário: ", error);
+      alert("Erro ao cadastrar usuário. Tente novamente."); // Mensagem de erro para o usuário
+    }
   };
 
   return (
@@ -87,40 +87,18 @@ export default function SignUp() {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-  },
-  containerLogo: {
-    flex: 2,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: "10%",
-  },
-  containerForm: {
-    flex: 1,
-    paddingStart: "10%",
-    paddingEnd: "10%",
-    marginBottom: "5%", // Adjusted margin bottom
-  },
-  signupTitleBox: {
-    marginBottom: 12,
-  },
-  message: {
-    fontSize: 28,
-    fontWeight: "bold",
-    paddingStart: "5%",
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 20,
   },
   title: {
-    fontSize: 20,
-    marginTop: 8,
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 12,
   },
   input: {
     borderBottomWidth: 1,
@@ -131,21 +109,15 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#129063",
     borderRadius: 8,
-    paddingVertical: 8,
-    width: "60%",
-    alignSelf: "center",
-    justifyContent: "center",
+    paddingVertical: 12,
+    marginTop: 20,
     alignItems: "center",
-  },
-  buttonBox: {
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    top: "60%",
   },
   buttonText: {
     color: "white",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
 });
+
+export default SignUp;

@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { auth } from '../services/firebaseConfig'; // Importe a instância de autenticação do Firebase
 
 export default function SignIn() {
     const navigation = useNavigation();
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
 
-    const signInWithGoogle = async () => {
+    const handleSignIn = async () => {
         try {
-            await GoogleSignin.configure();
-            const { idToken } = await GoogleSignin.signIn();
-            const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-            await auth().signInWithCredential(googleCredential);
+            await signInWithEmailAndPassword(auth, email, senha); // Use a instância de autenticação do Firebase
+            console.log("Usuário autenticado com sucesso!");
+            // Após autenticação bem-sucedida, pode ser implementada a navegação para a próxima tela
         } catch (error) {
-            console.error(error);
+            console.error("Erro ao autenticar usuário:", error);
         }
     };
 
@@ -25,7 +25,7 @@ export default function SignIn() {
             <View style={styles.containerLogo}>
                 <Animatable.Image
                     animation='flipInY'
-                    source={require('../../assets/logo.png')}
+                    source={require('../assets/logo.png')}
                     style={{ width: "35%" }}
                     resizeMode='contain'
                 />
@@ -46,11 +46,16 @@ export default function SignIn() {
                 <TextInput
                     placeholder='Digite um email aqui'
                     style={styles.input}
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <Text style={styles.title}>Senha</Text>
                 <TextInput
                     placeholder='Digite sua senha aqui'
                     style={styles.input}
+                    secureTextEntry
+                    value={senha}
+                    onChangeText={setSenha}
                 />
             </Animatable.View>
 
@@ -58,23 +63,9 @@ export default function SignIn() {
                 animation='fadeInUp'
                 style={styles.buttonBox}
             >
-
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={handleSignIn}>
                     <Text style={styles.buttonText}>Confirmar</Text>
                 </TouchableOpacity>
-
-            </Animatable.View>
-
-            <Animatable.View
-                animation='fadeInUp'
-                style={styles.buttonBox}
-            >
-
-                <TouchableOpacity style={styles.buttonGoogle} onPress={signInWithGoogle}>
-                    <AntDesign name="google" size={30} color="#4285F4" style={styles.googleIconStyle} />
-                    <Text style={styles.buttonTextGoogle}>Logar com conta Google</Text>
-                </TouchableOpacity>
-
             </Animatable.View>
 
             <Animatable.View
@@ -144,17 +135,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    buttonGoogle: {
-        flexDirection: 'row',
-        borderColor: 'black',
-        borderWidth: 1,
-        borderRadius: 8,
-        width: "60%",
-        alignSelf: "center",
-        top: "10%",
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     buttonBox: {
         alignSelf: "center",
         justifyContent: 'center',
@@ -165,18 +145,6 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
-    },
-    buttonTextGoogle: {
-        color: 'black',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        fontSize: 12,
-        fontWeight: 'bold',
-    },
-    googleIconStyle: {
-        paddingVertical: 5,
-        marginRight: 10,
-        marginLeft: 10,
     },
     buttonRegister: {
         marginTop: 4,
