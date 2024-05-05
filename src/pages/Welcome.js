@@ -1,60 +1,67 @@
-import React from 'react'
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
     Image,
-    TouchableOpacity
-} from 'react-native'
-
-import * as Animatable from 'react-native-animatable'
-
-import { useNavigation } from '@react-navigation/native'
+    TouchableOpacity,
+    ImageBackground // Adicionado para possibilidade de imagem de fundo
+} from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Welcome() {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container} >
-            <View style={styles.containerLogo}>
-                <Animatable.Image
-                    animation='flipInY'
-                    source={require('../assets/logo.png')}
-                    style={{ width: "100%" }}
-                    resizeMode='contain'
-                />
+        <ImageBackground
+            source={require('../assets/background_image.jpg')}
+            style={styles.backgroundImage}
+        >
+            <View style={styles.container}>
+                <View style={styles.containerLogo}>
+                    <Animatable.Image
+                        animation='flipInY'
+                        source={require('../assets/logo.png')}
+                        style={{ width: "100%" }}
+                        resizeMode='contain'
+                    />
+                </View>
+
+                <Animatable.View delay={600} animation="fadeInUp" style={styles.containerForm}>
+                    <Text style={styles.title}>Explore o talento artesanal em sua região</Text>
+                    <Text style={styles.text}></Text>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => navigation.navigate('SignIn')}
+                    >
+                        <Text style={styles.buttonText}>Entrar</Text>
+                    </TouchableOpacity>
+                </Animatable.View>
             </View>
-
-            <Animatable.View delay={600} animation="fadeInUp" style={styles.containerForm}>
-                <Text style={styles.title}>Explore o talento artesanal em sua região</Text>
-                <Text style={styles.text}></Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('SignIn')}
-                >
-                    <Text style={styles.buttonText}>Entrar</Text>
-                </TouchableOpacity>
-            </Animatable.View>
-        </View >
-
-
-    )
+        </ImageBackground>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: 'rgba(255, 255, 255, 0.7)', // Adicionado para tornar o conteúdo mais legível com uma imagem de fundo
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
     },
     containerLogo: {
         flex: 2,
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center'
     },
     containerForm: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         paddingStart: '5%',
         paddingEnd: '5%'
     },
@@ -87,5 +94,4 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "white",
     },
-
-})
+});
