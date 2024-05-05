@@ -1,7 +1,15 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TouchableOpacity
+} from 'react-native'
+
+import * as Animatable from 'react-native-animatable'
+
+import { useNavigation } from '@react-navigation/native'
 
 export default function Welcome() {
     const navigation = useNavigation();
@@ -28,6 +36,8 @@ export default function Welcome() {
                 </TouchableOpacity>
             </Animatable.View>
         </View >
+
+
     )
 }
 
@@ -46,8 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         paddingStart: '5%',
-        paddingEnd: '5%',
-        marginBottom: '10%', // Adjusted margin bottom
+        paddingEnd: '5%'
     },
     title: {
         fontSize: 20,
@@ -63,6 +72,7 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
     button: {
+        position: "absolute",
         backgroundColor: '#129063',
         borderRadius: 8,
         paddingVertical: 8,
@@ -77,4 +87,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "white",
     },
-});
+
+})
